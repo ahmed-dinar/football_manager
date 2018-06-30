@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 var logger = require('winston');
 var async = require('async');
+var has = require('has');
 var AppError = appRequire('lib/custom-error');
 var Schema = appRequire('config/validator-schema');
 var authJwt = appRequire('middlewares/authJwt');
@@ -94,7 +95,11 @@ router.get('/:tname', authJwt, function(req, res, next) {
 
     console.log(team);
 
-    res.status(200).json(team);
+    if(!team || !team.length){
+      return res.status(404);
+    }
+
+    res.status(200).json(team[0]);
 
   });
 
@@ -156,7 +161,7 @@ router.get('/:tname/player/:pname', authJwt, function(req, res, next) {
           return callback(new AppError(playerName + ' does not exists','input'));
         }
 
-        return callback(null, rows);
+        return callback(null, rows[0]);
       });
     }
   ],
@@ -171,7 +176,7 @@ router.get('/:tname/player/:pname', authJwt, function(req, res, next) {
 
     console.log(data);
 
-    res.sendStatus(200).json(data);
+    res.status(200).json(data);
   });
 
 });
@@ -217,12 +222,17 @@ router.post('/:tname/addplayer', authJwt, function(req, res, next) {
 
           req.body.tid = teamId;
 
-          return callback(null, teamId);
+          console.log('coooooooooooooooooooo');
+
+          return callback();
         });
     },
     async.apply(Manager.addPlayer, req.body)
   ],
   function(err, data){
+
+    console.log('pppppppppppholaaaaaaaaaaaaaaaaa');
+
     if(err){
       if(err.name === 'input')
         return res.status(400).json({ error: err.message });
@@ -238,6 +248,7 @@ router.post('/:tname/addplayer', authJwt, function(req, res, next) {
 
 
 router.post('/:tname/delete/:pname', authJwt, function(req, res, next) {
+
 
   var managerId = req.user.id;
   var teamName = req.params.tname;
@@ -279,6 +290,7 @@ router.post('/:tname/delete/:pname', authJwt, function(req, res, next) {
     Manager.deletePlayer
   ],
   function(err, data){
+    console.log('ooooooooooooooooooooooo');
     if(err){
       if(err.name === 'input')
         return res.status(400).json({ error: err.message });
@@ -323,6 +335,7 @@ router.post('/:tname/update/:pname', authJwt, function(req, res, next) {
           return callback(err);
         }
 
+
         if(!rows || !rows.length){
           return callback(new AppError(playerName + ' does not exists','input'));
         }
@@ -333,7 +346,7 @@ router.post('/:tname/update/:pname', authJwt, function(req, res, next) {
 
       });
     },
-    function validateInput(teamId, callback){
+    function validateInput(playerId, callback){
 
       if( has(req.body,'name') ){
         return callback(new AppError('Can\'t update player name','input'));
@@ -353,19 +366,21 @@ router.post('/:tname/update/:pname', authJwt, function(req, res, next) {
             return callback(new AppError(e.param + ' ' + e.msg,'input'));
           }
 
-          req.body.tid = teamId;
 
-          return callback(null, teamId);
+
+          Manager.updatePlayer(playerId, req.body, callback);
+
         });
-    },
-    Manager.updatePlayer
+    }
   ],
   function(err, data){
-    if(err){
-      if(err.name === 'input')
-        return res.status(400).json({ error: err.message });
 
-      console.log(err);
+    if(err){
+      if(err.name === 'input'){
+        return res.sendStatus(400);
+      }
+
+      console.log('ki somossa');
       return res.status(500).json({ error: 'Internal Server Error' });
     }
 

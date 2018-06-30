@@ -144,5 +144,6 @@ module.exports = {
   isDuration: isDuration,
   isDatetime: isDatetime,
   minDuration: minDuration,
-  teamNameExists: teamNameExists
+  teamNameExists: teamNameExists,
+  playerNameExists: playerNameExists
 };

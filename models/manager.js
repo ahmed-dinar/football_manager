@@ -71,7 +71,7 @@ Manager.getTeam = function(managerId, teamName, fn){
 
 Manager.getPlayer = function(teamId, playerName, fn){
 
-  if( !teamName || !managerId ){
+  if( !teamId || !playerName ){
     return fn(new Error('teamName && managerId required'));    
   }
 
@@ -293,19 +293,12 @@ Manager.getProfile = function (email , fn) {
 Manager.teams = function (managerId , callback) {
 
 
-  var sql = Query.select()
+  var sql = Query.select('tm.*')
       .from(teamTable + ' as tm')
-      .leftJoin(playerTable + ' as pl')
-      .where('mid', managerId);
+      .leftJoin(playerTable + ' as pl', 'tm.id', 'pl.tid')
+      .where('tm.mid', managerId);
 
-      DB.execute(sql.toString(),function (err,rows) {
-        if(err) return callback(err);
-
-        console.log(rows.length);
-        console.log(rows);
-
-        callback(null, rows);
-      });
+      DB.execute(sql.toString(), callback);
 
 };
 
@@ -350,6 +343,8 @@ Manager.addPlayer = function (data , fn) {
         .into(playerTable)
         .toString();
 
+        console.log('holaaaaaaaaaaaaaaaaa');
+
       DB.execute(sql, fn);
 };
 
@@ -369,7 +364,7 @@ Manager.updatePlayer = function (playerId, data, fn) {
 
   var sql = Query(playerTable)
     .update(data)
-    .where({ 'id': playerId });
+    .where({ 'id': playerId })
     .toString();
 
   DB.execute(sql, fn);

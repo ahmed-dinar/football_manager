@@ -63,11 +63,11 @@ module.exports = {
     },
     'net_worth': {
       notEmpty: true,
-      isInt: {
-        options: [{ allow_leading_zeroes: false }],
-        errorMessage: 'No leading zero is allowed'
+      isLength: {
+        options: [{min: 1, max: 100}],
+        errorMessage: 'Must be between 1 and 100 chars long'
       },
-      errorMessage: 'Invalid netWorth'
+      errorMessage: 'Invalid net_worth'
     }
   },
   'player': {
@@ -97,24 +97,24 @@ module.exports = {
     },
     'salary': {
       notEmpty: true,
-      isInt: {
-        options: [{ allow_leading_zeroes: false }],
-        errorMessage: 'No leading zero is allowed'
+      isLength: {
+        options: [{min: 3, max: 100}],
+        errorMessage: 'Must be between 1 and 100 chars long'
       },
       errorMessage: 'Invalid salary'
     }
   },
   'updatePlayer': {
     'position': {
-      notEmpty: true,
+      notEmpty: false,
       isLength: {
-        options: [{min: 3, max: 50}],
+        options: [{min: 0, max: 50}],
         errorMessage: 'Must be between 3 and 50 chars long'
       },
       errorMessage: 'Invalid position'
     },
     'rating': {
-      notEmpty: true,
+      notEmpty: false,
       isInt: {
         options: [{ allow_leading_zeroes: false }],
         errorMessage: 'No leading zero is allowed'
@@ -122,10 +122,10 @@ module.exports = {
       errorMessage: 'Invalid rating'
     },
     'salary': {
-      notEmpty: true,
-      isInt: {
-        options: [{ allow_leading_zeroes: false }],
-        errorMessage: 'No leading zero is allowed'
+      notEmpty: false,
+      isLength: {
+        options: [{min: 0, max: 100}],
+        errorMessage: 'Must be between 1 and 100 chars long'
       },
       errorMessage: 'Invalid salary'
     }
