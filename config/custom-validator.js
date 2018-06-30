@@ -10,9 +10,6 @@ var logger = require('winston');
 // check if email already registered
 //
 function emailExists(email){
-
-  console.log('email === ' + email);
-
   return new Promise(function(resolve, reject){
     Manager.available(email, function(err, rows){
 
@@ -21,7 +18,6 @@ function emailExists(email){
         throw err;
       }
       if(rows && rows.length){
-        console.log('holaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
         reject(new Error(email + ' already taken'));
         return;
       }

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 
-
-
-=======
 # Football Manager App (Backend)
 
 |            |         |          

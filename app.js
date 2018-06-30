@@ -65,7 +65,7 @@ module.exports.init = function () {
 
   var _this = this;
 
-  //require('./config/logger');
+  require('./config/logger');
 
   var app = express();
 

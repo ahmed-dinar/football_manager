@@ -115,10 +115,6 @@ module.exports = {
     },
     'rating': {
       notEmpty: false,
-      isInt: {
-        options: [{ allow_leading_zeroes: false }],
-        errorMessage: 'No leading zero is allowed'
-      },
       errorMessage: 'Invalid rating'
     },
     'salary': {

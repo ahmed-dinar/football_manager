@@ -222,8 +222,6 @@ router.post('/:tname/addplayer', authJwt, function(req, res, next) {
 
           req.body.tid = teamId;
 
-          console.log('coooooooooooooooooooo');
-
           return callback();
         });
     },
@@ -231,7 +229,6 @@ router.post('/:tname/addplayer', authJwt, function(req, res, next) {
   ],
   function(err, data){
 
-    console.log('pppppppppppholaaaaaaaaaaaaaaaaa');
 
     if(err){
       if(err.name === 'input')
@@ -290,7 +287,7 @@ router.post('/:tname/delete/:pname', authJwt, function(req, res, next) {
     Manager.deletePlayer
   ],
   function(err, data){
-    console.log('ooooooooooooooooooooooo');
+
     if(err){
       if(err.name === 'input')
         return res.status(400).json({ error: err.message });
@@ -311,6 +308,14 @@ router.post('/:tname/update/:pname', authJwt, function(req, res, next) {
   var managerId = req.user.id;
   var teamName = req.params.tname;
   var playerName = req.params.pname;
+
+  if( !has(req.body,'position') && !has(req.body,'rating') && !has(req.body,'salary') ){
+      return res.status(400).json({ error: 'Empty request' });
+  }
+
+  if( has(req.body,'name') ){
+    return res.status(400).json({ error: 'Can\'t update player name' });
+  }
 
   async.waterfall([
     function validateTeam(callback){
@@ -348,10 +353,7 @@ router.post('/:tname/update/:pname', authJwt, function(req, res, next) {
     },
     function validateInput(playerId, callback){
 
-      if( has(req.body,'name') ){
-        return callback(new AppError('Can\'t update player name','input'));
-      }
-
+      
       req.checkBody(Schema.updatePlayer);
  
 
@@ -377,7 +379,7 @@ router.post('/:tname/update/:pname', authJwt, function(req, res, next) {
 
     if(err){
       if(err.name === 'input'){
-        return res.sendStatus(400);
+        return res.status(400).json({ error: err.message });
       }
 
       console.log('ki somossa');
