@@ -139,7 +139,7 @@ Error Response: 400
 
 
 
-##### ``GET /api/team/player/:playerName``
+##### ``GET /api/team/:teamName/player/:playerName``
 > get a specific team's player details
 
 ```javascript
