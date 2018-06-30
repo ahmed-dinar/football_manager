@@ -71,19 +71,11 @@ headers: {
   Content-Type: 'application/x-www-form-urlencoded',
   access_token: ''
 }
-
-body: {
-  email: '',
-  password: ''
-}
 ```
 
 ```javascript
 Success Response: 200
-{
-  access_token: '',
-  payLoad: {}
-}
+[]
 Error Response: 401
 ```
 
@@ -140,7 +132,7 @@ headers: {
 
 ```javascript
 Success Response: 200
-{}
+[]
 Error Response: 400
 ```
 
