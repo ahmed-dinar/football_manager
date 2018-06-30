@@ -223,14 +223,3 @@ body: {
 Success Response: 200
 Error Response: 400
 ```
-
-
-
-
-
-
-
-
-
-
->>>>>>> 7307c5c54f2ab41fff7de90ffd8b7d1348805ab4
